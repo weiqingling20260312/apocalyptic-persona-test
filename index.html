@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页测试系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #330000 100%);
+            padding: 20px;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+        }
+        
+        h2 {
+            text-align: center;
+            color: #ff4444;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .intro p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #ffdddd;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(30, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }
+        
+        .question h3 {
+            font-size: 16px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            color: #ff6666;
+            padding: 15px;
+            background: rgba(50, 0, 0, 0.3);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0;
+        }
+        
+        .option {
+            margin: 0;
+        }
+        
+        .option label {
+            display: block;
+            cursor: pointer;
+            color: #ffffff;
+            padding: 15px;
+            background: rgba(40, 0, 0, 0.4);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .option label::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .option input[type="radio"]:checked + label::after {
+            content: '';
+            position: absolute;
+            top: 19px;
+            right: 19px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+        
+        .option label:hover {
+            background: rgba(60, 0, 0, 0.5);
+            border-color: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+        
+        .option input[type="radio"] {
+            display: none;
+        }
+        
+        .option input[type="radio"]:checked + label {
+            background: rgba(80, 0, 0, 0.6);
+            border-color: rgba(255, 0, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+        
+        .option label {
+            cursor: pointer;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #660000 0%, #cc0000 100%);
+            color: white;
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #880000 0%, #ff4444 100%);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .btn-group .btn {
+            width: 48%;
+        }
+        
+        .result-content {
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        
+        .result-content p {
+            margin-bottom: 10px;
+        }
+        
+        .result-content ul {
+            margin-left: 20px;
+        }
+        
+        .result-content li {
+            margin-bottom: 5px;
+            color: #ffdddd;
+        }
+        
+        .export-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #330000 0%, #660000 100%);
+            color: white;
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 10px;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+        }
+        
+        .export-btn:hover {
+            background: linear-gradient(135deg, #550000 0%, #880000 100%);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .error {
+            color: #ff6666;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #ff9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 引入页 -->
+        <div class="page active" id="page-intro">
+            <div class="intro">
+                <h2>世界终结，你选择看到什么？</h2>
+                <p>你是唯一的幸存者（是吗？）</p>
+                <p>让我听到你内心的回响吧。</p>
+                <button class="btn" onclick="goToPage(1)">开始测试</button>
+            </div>
+        </div>
+        
+        <!-- 问题1 -->
+        <div class="page" id="page-1">
+            <div class="progress">第 1 题 / 共 5 题</div>
+            <div class="error" id="error-1">请选择一个选项</div>
+            <div class="question">
+                <h3>1. 寂静。<br>寂静。<br>寂静。<br><br>寂静长得像一条让人上吊的绳索。<br>你从绳索的另一端醒来。<br>一片虚无中，你看见自己的影子。<br>它在做什么？</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" value="a" id="q1-a">
+                        <label for="q1-a">A. 它手脚并用，像只试图爬进你的身体的野兽。<br>你先动了手，把它撕成两半。<br>只剩一缕残烟。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="b" id="q1-b">
+                        <label for="q1-b">B. 它安静地贴在你的脚下，对你俯首称臣。<br>在被遗弃的世界里，你们相依为命。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="c" id="q1-c">
+                        <label for="q1-c">C. 它站在你面前。<br>对你长久地投以注视。<br>它是你灵魂的先知，能够回答你的所有疑问。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="d" id="q1-d">
+                        <label for="q1-d">D. 你眨眼，地上空无一物，除了一圈潮湿的轮廓。<br>你很清楚：<br>光源不集中的地方，影子只可能是幻觉。</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage('intro')">返回</button>
+                <button class="btn" onclick="nextPage(1)">下一题</button>
+            </div>
+        </div>
+        
+        <!-- 问题2 -->
+        <div class="page" id="page-2">
+            <div class="progress">第 2 题 / 共 5 题</div>
+            <div class="error" id="error-2">请选择一个选项</div>
+            <div class="question">
+                <h3>2. 你往前走。<br><br>整个世界被一只手掌捏碎，到处都是断壁残垣。<br>你穿过空街。<br>在所有交错的尽头，你闻到一股气味。<br>这是最后一群人类留下的。<br>它是——</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" value="a" id="q2-a">
+                        <label for="q2-a">A. 硫磺味。<br>人类倾尽所有智慧和勇气，抵抗那只"手"。<br>你相信那一刻光芒迸发，胜过恒星。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="b" id="q2-b">
+                        <label for="q2-b">B. 花的残香。<br>幸存者为他们深爱的死者铺满鲜花。<br>一场盛大而无望的追悼。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="c" id="q2-c">
+                        <label for="q2-c">C. 木头燃烧后的气息。<br>人们点火，席地而坐，不再讨论恐惧和伤痛。<br>他们闭眼，用语言编织最后的历史。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="d" id="q2-d">
+                        <label for="q2-d">D. 血味。<br>危机来临，人类从不团结。<br>他们互相猜忌、撕咬。<br>可惜啊，你来晚了。<br>来不及成为这场盛宴的座上宾。</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(1)">上一题</button>
+                <button class="btn" onclick="nextPage(2)">下一题</button>
+            </div>
+        </div>
+        
+        <!-- 问题3 -->
+        <div class="page" id="page-3">
+            <div class="progress">第 3 题 / 共 5 题</div>
+            <div class="error" id="error-3">请选择一个选项</div>
+            <div class="question">
+                <h3>3. 你继续走。<br>亲爱的求索者啊，你不知道自己走了多久。<br>脚底已经裂开，脚趾浸在血中变僵。<br>你穿过一座又一座萧索的城邦，来到海与大陆的交界。<br>你眺望地平线的尽头。</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" value="a" id="q3-a">
+                        <label for="q3-a">A. 你居然看到了另一个幸存者。<br>消瘦，苍白，像个没被擦掉的漆点。<br>他跪在地上，用碎砖垒起矮墙。<br>他会重复这个动作，至死方休。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="b" id="q3-b">
+                        <label for="q3-b">B. 几块堆砌的石头，三角形，呈现守护的姿态。<br>它身后是密密麻麻的同党。<br>它们的主人如此顽固：他们相信这片土地值得他们驻守，即使以被风蚀殆尽为代价。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="c" id="q3-c">
+                        <label for="q3-c">C. 一具庞大的动物尸体，你分辨出，它是多个物种的组合物，象、鲸、表面铺满甲虫。<br>它被风推着，在荒原上缓慢滑行。<br>死亡和自由正不知廉耻地交媾。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="d" id="q3-d">
+                        <label for="q3-d">D. 风暴。<br>风暴。<br>风暴。<br>海浪像史前巨兽一样翻滚，咆哮。旋涡是它森然的眼窝。<br>这个星球露出了它真正的面目。<br>天真，残忍，从未被驯服。</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(2)">上一题</button>
+                <button class="btn" onclick="nextPage(3)">下一题</button>
+            </div>
+        </div>
+        
+        <!-- 问题4 -->
+        <div class="page" id="page-4">
+            <div class="progress">第 4 题 / 共 5 题</div>
+            <div class="error" id="error-4">请选择一个选项</div>
+            <div class="question">
+                <h3>4. 在你接近它之前，天空传来一声巨响，强迫你仰起脖颈。<br>亿年前，第一只猿猴从群体中独立出来，拥有思想。<br>文明始于第一次仰望星空。<br>不过，你看到的和它截然不同。</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" value="a" id="q4-a">
+                        <label for="q4-a">A. 天空裂出个豁口，缝隙像一张讪笑的脸。<br>这场毁灭是个兴之所及的玩笑。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="b" id="q4-b">
+                        <label for="q4-b">B. 阴云密布。这是雷阵雨的前兆。<br>天空也会哭泣吗？<br>这是为哪个亡魂而鸣的挽歌？</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="c" id="q4-c">
+                        <label for="q4-c">C. 烈火熊熊。<br>你的视网膜在灼烧。<br>你意识到——<br>摧毁中蕴藏着新生的力量。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="d" id="q4-d">
+                        <label for="q4-d">D. 天空成为土地的倒影，澄明如镜。<br>你在其上看到了你自己。<br>恒久地、孤独地矗立。</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(3)">上一题</button>
+                <button class="btn" onclick="nextPage(4)">下一题</button>
+            </div>
+        </div>
+        
+        <!-- 问题5 -->
+        <div class="page" id="page-5">
+            <div class="progress">第 5 题 / 共 5 题</div>
+            <div class="error" id="error-5">请选择一个选项</div>
+            <div class="question">
+                <h3>5. 祂降临了。<br>世界再次扭曲，像你刚苏醒时一样。<br>你无法辨别祂的形态，只能感到祂的存在。<br>祂离你如此之近，如此慷慨！<br>祂允许你带走一样东西。<br>代价是——<br>你的生命。</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" value="a" id="q5-a">
+                        <label for="q5-a">A. 一枚胚胎。<br>漂浮在透明容器里。<br>祂告诉你：<br>这是人类的第一代。<br>这个物种会重新开始，带来：火，战争，叹息。<br>以及亲吻。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="b" id="q5-b">
+                        <label for="q5-b">B. 一片原始海域。<br>足够深，足够广，足够一视同仁地吞没一切残迹。<br>世界回到海洋的子宫中，只剩可预测的、秩序的波涛。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="c" id="q5-c">
+                        <label for="q5-c">C. 太阳。<br>灼烧。<br>灼烧。<br>灼烧。<br>没有生命。<br>只有无穷无尽的光和热。<br>宇宙狂奔向自毁，或许这才是它本真的模样。</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="d" id="q5-d">
+                        <label for="q5-d">D. 一只眼睛，祂的眼睛。<br>你的肉身毁灭，意识看到祂所看到的一切。<br>无论是真理，还是虚妄。<br>你将永远不能合上眼睑。</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(4)">上一题</button>
+                <button class="btn" onclick="calculateResult()">提交测试</button>
+            </div>
+        </div>
+        
+        <!-- 结果页 -->
+        <div class="page" id="page-result">
+            <h2>测试结果</h2>
+            <div class="result-content" id="resultContent"></div>
+            <button class="btn" style="margin-top: 20px;" onclick="restartTest()">重新测试</button>
+        </div>
+    </div>
+    
+    <script>
+        // 存储用户答案
+        let answers = {};
+        
+        // 页面导航函数
+        function goToPage(page) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            if (page === 'intro') {
+                document.getElementById('page-intro').classList.add('active');
+            } else {
+                document.getElementById(`page-${page}`).classList.add('active');
+            }
+        }
+        
+        // 下一页函数
+        function nextPage(currentPage) {
+            // 获取当前页的答案
+            const questionName = `q${currentPage}`;
+            const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+            
+            // 检查是否选择了选项
+            if (!selectedOption) {
+                document.getElementById(`error-${currentPage}`).style.display = 'block';
+                return;
+            }
+            
+            // 隐藏错误提示
+            document.getElementById(`error-${currentPage}`).style.display = 'none';
+            
+            // 存储答案
+            answers[questionName] = selectedOption.value;
+            
+            // 导航到下一页
+            if (currentPage < 5) {
+                goToPage(currentPage + 1);
+            }
+        }
+        
+        // 权重系统 - 每个选项对应的指标值
+        const weights = {
+            q1: {
+                a: { D: 2, G: 1 },
+                b: { W: 2, R: 1 },
+                c: { W: 2, N: 1 },
+                d: { V: 2, N: 1 }
+            },
+            q2: {
+                a: { D: 2, G: 1 },
+                b: { W: 2, R: 1 },
+                c: { G: 2, W: 1 },
+                d: { D: 2, V: 1 }
+            },
+            q3: {
+                a: { W: 2, R: 2, N: 1 },
+                b: { G: 3, W: 2, R: 1 },
+                c: { V: 2, N: 1 },
+                d: { D: 1, V: 1, N: 1 }
+            },
+            q4: {
+                a: { V: 2, D: 1 },
+                b: { W: 2, N: 1 },
+                c: { D: 2, N: 2 },
+                d: { V: 2, G: 1 }
+            },
+            q5: {
+                a: { W: 2, N: 3, G: 1 },
+                b: { D: 3, V: 1, R: 2 },
+                c: { D: 2, V: 2, N: 1 },
+                d: { V: 3, G: 1 }
+            }
+        };
+        
+        // 结果类型 - 五个维度
+        const resultTypes = [
+            {
+                name: "第一次月升",
+                description: "你在末日中看到了希望的微光，即使在最黑暗的时刻，也能找到新生的可能。你的内心充满温暖，相信未来会更好。"
+            },
+            {
+                name: "孤塔",
+                description: "你是末日中的守望者，独自坚守着信念和责任。你沉稳而坚定，即使面对绝望也不放弃希望。"
+            },
+            {
+                name: "锈钉",
+                description: "你在废墟中寻找残存的价值，善于发现平凡中的美好。你务实而坚韧，能够在恶劣环境中生存并创造意义。"
+            },
+            {
+                name: "赤色潮汐",
+                description: "你被毁灭的力量所吸引，看到了变革的必要性。你充满激情和力量，能够在混乱中找到新的秩序。"
+            },
+            {
+                name: "冷雾",
+                description: "你在虚无中探索真理，对世界有深刻的思考。你冷静而理性，能够超越表面现象看到事物的本质。"
+            }
+        ];
+        
+        function calculateResult() {
+            // 检查是否所有问题都已回答
+            const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            let allAnswered = true;
+            
+            for (const q of questions) {
+                if (!answers[q]) {
+                    // 如果当前页是最后一页，检查是否选择了选项
+                    if (q === 'q5') {
+                        const selectedOption = document.querySelector(`input[name="q5"]:checked`);
+                        if (!selectedOption) {
+                            document.getElementById('error-5').style.display = 'block';
+                            return;
+                        }
+                        // 存储最后一题的答案
+                        answers[q] = selectedOption.value;
+                    } else {
+                        allAnswered = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (!allAnswered) {
+                alert('请回答所有问题');
+                return;
+            }
+            
+            // 计算各项指标的总分
+            let metrics = {
+                W: 0, // 温度
+                G: 0, // 守望
+                D: 0, // 毁灭
+                V: 0, // 虚无
+                N: 0, // 新生
+                R: 0  // 残存
+            };
+            
+            for (const q of questions) {
+                const answer = answers[q];
+                const questionWeights = weights[q][answer];
+                
+                // 累加各项指标的值
+                for (const [key, value] of Object.entries(questionWeights)) {
+                    metrics[key] += value;
+                }
+            }
+            
+            // 计算五个维度的得分
+            const dimensions = {
+                第一次月升: 2 * metrics.W + metrics.G - metrics.D - metrics.V + 3 * metrics.N,
+                孤塔: metrics.W + 3 * metrics.G - metrics.D + metrics.N + metrics.R,
+                锈钉: 3 * metrics.W + metrics.G - metrics.V,
+                赤色潮汐: -metrics.W + 3 * metrics.D + metrics.V - metrics.N,
+                冷雾: -metrics.W + metrics.G - metrics.D + 3 * metrics.V
+            };
+            
+            // 确定最高得分的维度
+            let maxScore = -Infinity;
+            let resultType = 0;
+            let resultName = "";
+            
+            let i = 0;
+            for (const [name, score] of Object.entries(dimensions)) {
+                if (score > maxScore) {
+                    maxScore = score;
+                    resultType = i;
+                    resultName = name;
+                }
+                i++;
+            }
+            
+            // 显示结果
+            const resultContent = document.getElementById('resultContent');
+            
+            // 为第一次月升结果类型生成特定内容
+            if (resultName === "第一次月升") {
+                resultContent.innerHTML = `
+                    <p><strong>你的类型：</strong>${resultName}</p>
+                    <p>你把一粒种子埋进自己的肋骨。</p>
+                    <p>它将在某个夜晚破开你的胸膛，萌芽。</p>
+                    <p>那便是了——新世界的第一轮月亮。</p>
+                    <p style="font-size: 14px; font-style: italic; margin-top: 20px;">新生/浪漫/执念/共情/理想主义</p>
+                    <p style="font-style: italic; text-align: right; margin-top: 30px;">April is the cruel-lest month, breeding Lilacs out of the dead land.</p>
+                    <p style="font-style: italic; text-align: right;">——The Waste Land  T. S. Eliot</p>
+                `;
+                // 修改结果页标题
+                document.querySelector('#page-result h2').textContent = '月升';
+            } else {
+                resultContent.innerHTML = `
+                    <p><strong>你的类型：</strong>${resultName}</p>
+                    <p><strong>描述：</strong>${resultTypes[resultType].description}</p>
+                `;
+                // 恢复默认标题
+                document.querySelector('#page-result h2').textContent = '测试结果';
+            }
+            
+            // 导航到结果页
+            goToPage('result');
+        }
+        
+        // 重新测试函数
+        function restartTest() {
+            // 重置答案
+            answers = {};
+            
+            // 重置所有单选按钮
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // 隐藏所有错误提示
+            document.querySelectorAll('.error').forEach(error => {
+                error.style.display = 'none';
+            });
+            
+            // 导航到引入页
+            goToPage('intro');
+        }
+        
+
+    </script>
+</body>
+</html>
