@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网页测试系统</title>
+    <title>终焉回响</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -11,8 +12,10 @@
             box-sizing: border-box;
         }
         
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Noto Serif SC', 'Crimson Text', serif;
             background: linear-gradient(135deg, #000000 0%, #330000 100%);
             padding: 20px;
             min-height: 100vh;
@@ -27,6 +30,22 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
             border: 1px solid rgba(255, 0, 0, 0.5);
+            animation: borderBlink 2s infinite alternate ease-in-out;
+        }
+        
+        @keyframes borderBlink {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+                border-color: rgba(255, 0, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+                border-color: rgba(255, 0, 0, 0.9);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+                border-color: rgba(255, 0, 0, 0.5);
+            }
         }
         
         h2 {
@@ -46,6 +65,64 @@
             line-height: 1.5;
             margin-bottom: 20px;
             color: #ffdddd;
+        }
+        
+        .eye-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .eye-image img {
+            max-width: 200px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+            animation: eyeBlink 2s infinite alternate ease-in-out;
+        }
+        
+        @keyframes eyeBlink {
+            0% {
+                opacity: 1;
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+            }
+            50% {
+                opacity: 0.5;
+                filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.9));
+            }
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+            }
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #ff9999;
         }
         
         .question {
@@ -144,6 +221,7 @@
             color: white;
             border: 1px solid rgba(255, 0, 0, 0.5);
             border-radius: 5px;
+            font-family: 'Noto Serif SC', 'Crimson Text', serif;
             font-size: 16px;
             cursor: pointer;
             margin-top: 20px;
@@ -189,6 +267,7 @@
             color: white;
             border: 1px solid rgba(255, 0, 0, 0.5);
             border-radius: 5px;
+            font-family: 'Noto Serif SC', 'Crimson Text', serif;
             font-size: 14px;
             cursor: pointer;
             margin-right: 10px;
@@ -207,21 +286,6 @@
             display: none;
             text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
-        
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-        }
-        
-        .progress {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #ff9999;
-        }
     </style>
 </head>
 <body>
@@ -232,170 +296,170 @@
                 <h2>世界终结，你选择看到什么？</h2>
                 <p>你是唯一的幸存者（是吗？）</p>
                 <p>让我听到你内心的回响吧。</p>
-                <button class="btn" onclick="goToPage(1)">开始测试</button>
+                <div class="eye-image">
+                   <img src="./bloodeye.jpg" alt="blood eye">
+                </div>
+                <button class="btn" onclick="goToPage(1)">开始旅程</button>
             </div>
         </div>
         
         <!-- 问题1 -->
         <div class="page" id="page-1">
-            <div class="progress">第 1 题 / 共 5 题</div>
-            <div class="error" id="error-1">请选择一个选项</div>
+            <div class="progress">1/5</div>
             <div class="question">
-                <h3>1. 寂静。<br>寂静。<br>寂静。<br><br>寂静长得像一条让人上吊的绳索。<br>你从绳索的另一端醒来。<br>一片虚无中，你看见自己的影子。<br>它在做什么？</h3>
+                <h3>寂静。<br>寂静。<br>寂静。<br>寂静长得像一条上吊的绳索。<br>你从绳索的另一端醒来，看见自己的影子。<br>它在做什么？</h3>
                 <div class="options">
                     <div class="option">
                         <input type="radio" name="q1" value="a" id="q1-a">
-                        <label for="q1-a">A. 它手脚并用，像只试图爬进你的身体的野兽。<br>你先动了手，把它撕成两半。<br>只剩一缕残烟。</label>
+                        <label for="q1-a">它手脚并用，试图爬进你的身体取代你。<br>你把它撕成两半。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q1" value="b" id="q1-b">
-                        <label for="q1-b">B. 它安静地贴在你的脚下，对你俯首称臣。<br>在被遗弃的世界里，你们相依为命。</label>
+                        <label for="q1-b">它安静地贴在你脚下。<br>在被遗弃的世界里，你们相依为命。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q1" value="c" id="q1-c">
-                        <label for="q1-c">C. 它站在你面前。<br>对你长久地投以注视。<br>它是你灵魂的先知，能够回答你的所有疑问。</label>
+                        <label for="q1-c">它站在你面前，注视你。<br>你灵魂的先知——准备好解答所有谜题。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q1" value="d" id="q1-d">
-                        <label for="q1-d">D. 你眨眼，地上空无一物，除了一圈潮湿的轮廓。<br>你很清楚：<br>光源不集中的地方，影子只可能是幻觉。</label>
+                        <label for="q1-d">地上空无一物。<br>你清楚：光源不集中的地方，影子只是幻觉。</label>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn" onclick="goToPage('intro')">返回</button>
-                <button class="btn" onclick="nextPage(1)">下一题</button>
+                <button class="btn" onclick="goToPage('intro')">回头</button>
+                <button class="btn" onclick="nextPage(1)">继续前行</button>
             </div>
         </div>
         
         <!-- 问题2 -->
         <div class="page" id="page-2">
-            <div class="progress">第 2 题 / 共 5 题</div>
-            <div class="error" id="error-2">请选择一个选项</div>
+            <div class="progress">2/5</div>
             <div class="question">
-                <h3>2. 你往前走。<br><br>整个世界被一只手掌捏碎，到处都是断壁残垣。<br>你穿过空街。<br>在所有交错的尽头，你闻到一股气味。<br>这是最后一群人类留下的。<br>它是——</h3>
+                <h3>你往前走。<br>整个世界被一只手掌捏碎，到处都是断壁残垣。<br>你穿过空街。在尽头，你闻到一股气味。<br>这是最后一群人类留下的。<br>它是——</h3>
                 <div class="options">
                     <div class="option">
                         <input type="radio" name="q2" value="a" id="q2-a">
-                        <label for="q2-a">A. 硫磺味。<br>人类倾尽所有智慧和勇气，抵抗那只"手"。<br>你相信那一刻光芒迸发，胜过恒星。</label>
+                        <label for="q2-a">硫磺味。<br>人类倾尽所有智慧和勇气，负隅顽抗。<br>那一刻的光芒，短暂得像奇迹。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q2" value="b" id="q2-b">
-                        <label for="q2-b">B. 花的残香。<br>幸存者为他们深爱的死者铺满鲜花。<br>一场盛大而无望的追悼。</label>
+                        <label for="q2-b">花的残香。<br>幸存者为他们深爱的死者铺满鲜花。<br>一场盛大而无望的追悼。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q2" value="c" id="q2-c">
-                        <label for="q2-c">C. 木头燃烧后的气息。<br>人们点火，席地而坐，不再讨论恐惧和伤痛。<br>他们闭眼，用语言编织最后的历史。</label>
+                        <label for="q2-c">木头燃烧后的气息。<br>人们围绕篝火席地而坐。<br>他们最后一次，讲述这个种族延续了千年的故事。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q2" value="d" id="q2-d">
-                        <label for="q2-d">D. 血味。<br>危机来临，人类从不团结。<br>他们互相猜忌、撕咬。<br>可惜啊，你来晚了。<br>来不及成为这场盛宴的座上宾。</label>
+                        <label for="q2-d">血味。<br>危机来临，人类相互猜忌、撕咬。<br>一切已经结束。这里只剩气味。</label>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn" onclick="goToPage(1)">上一题</button>
-                <button class="btn" onclick="nextPage(2)">下一题</button>
+                <button class="btn" onclick="goToPage(1)">回头</button>
+                <button class="btn" onclick="nextPage(2)">继续前行</button>
             </div>
         </div>
         
         <!-- 问题3 -->
         <div class="page" id="page-3">
-            <div class="progress">第 3 题 / 共 5 题</div>
-            <div class="error" id="error-3">请选择一个选项</div>
+            <div class="progress">3/5</div>
             <div class="question">
-                <h3>3. 你继续走。<br>亲爱的求索者啊，你不知道自己走了多久。<br>脚底已经裂开，脚趾浸在血中变僵。<br>你穿过一座又一座萧索的城邦，来到海与大陆的交界。<br>你眺望地平线的尽头。</h3>
+                <h3>你继续走。<br>你已经不记得走了多久。<br>脚底开裂，血在趾间慢慢变冷。<br>你穿过一座又一座萧索的城邦。<br>最终来到海与大陆的交界。<br>你眺望地平线。</h3>
                 <div class="options">
                     <div class="option">
                         <input type="radio" name="q3" value="a" id="q3-a">
-                        <label for="q3-a">A. 你居然看到了另一个幸存者。<br>消瘦，苍白，像个没被擦掉的漆点。<br>他跪在地上，用碎砖垒起矮墙。<br>他会重复这个动作，至死方休。</label>
+                        <label for="q3-a">你看到了另一个幸存者。<br>消瘦，苍白，像个没被擦掉的漆点。<br>他跪在地上，用碎砖垒起墙。<br>重复，重复，重复。至死方休。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q3" value="b" id="q3-b">
-                        <label for="q3-b">B. 几块堆砌的石头，三角形，呈现守护的姿态。<br>它身后是密密麻麻的同党。<br>它们的主人如此顽固：他们相信这片土地值得他们驻守，即使以被风蚀殆尽为代价。</label>
+                        <label for="q3-b">一处营地。<br>残破的帐篷遍地，折断的钢管像裸露的骨骼。<br>它们的主人如此顽固：<br>他们相信这片土地值得驻守。<br>即使代价是尸骨无存。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q3" value="c" id="q3-c">
-                        <label for="q3-c">C. 一具庞大的动物尸体，你分辨出，它是多个物种的组合物，象、鲸、表面铺满甲虫。<br>它被风推着，在荒原上缓慢滑行。<br>死亡和自由正不知廉耻地交媾。</label>
+                        <label for="q3-c">一具庞大的尸体。<br>像多个物种拼接而成——象、鲸，表面铺满甲虫。<br>风推着它缓慢滑行。<br>死亡与自由在此刻交织。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q3" value="d" id="q3-d">
-                        <label for="q3-d">D. 风暴。<br>风暴。<br>风暴。<br>海浪像史前巨兽一样翻滚，咆哮。旋涡是它森然的眼窝。<br>这个星球露出了它真正的面目。<br>天真，残忍，从未被驯服。</label>
+                        <label for="q3-d">海浪在酝酿着什么。<br>旋涡像缓慢睁开的眼睛。<br>这个星球将露出它真正的面目。<br>天真，残忍，从未被驯服。</label>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn" onclick="goToPage(2)">上一题</button>
-                <button class="btn" onclick="nextPage(3)">下一题</button>
+                <button class="btn" onclick="goToPage(2)">回头</button>
+                <button class="btn" onclick="nextPage(3)">继续前行</button>
             </div>
         </div>
         
         <!-- 问题4 -->
         <div class="page" id="page-4">
-            <div class="progress">第 4 题 / 共 5 题</div>
-            <div class="error" id="error-4">请选择一个选项</div>
+            <div class="progress">4/5</div>
             <div class="question">
-                <h3>4. 在你接近它之前，天空传来一声巨响，强迫你仰起脖颈。<br>亿年前，第一只猿猴从群体中独立出来，拥有思想。<br>文明始于第一次仰望星空。<br>不过，你看到的和它截然不同。</h3>
+                <h3>在你接近海岸之前，天空忽然传来一声巨响。<br>你被迫仰起脖颈。<br>很久以前，某个祖先第一次抬头。<br>文明由此开始。<br>但你在此刻看到的，并不是星空。</h3>
                 <div class="options">
                     <div class="option">
                         <input type="radio" name="q4" value="a" id="q4-a">
-                        <label for="q4-a">A. 天空裂出个豁口，缝隙像一张讪笑的脸。<br>这场毁灭是个兴之所及的玩笑。</label>
+                        <label for="q4-a">天空裂开一道豁口，缝隙像一张讪笑的脸。<br>这场毁灭，不过是一场兴之所至的玩笑。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q4" value="b" id="q4-b">
-                        <label for="q4-b">B. 阴云密布。这是雷阵雨的前兆。<br>天空也会哭泣吗？<br>这是为哪个亡魂而鸣的挽歌？</label>
+                        <label for="q4-b">阴云密布。<br>雷阵雨即将降临。<br>天空也会为亡魂哭泣吗？</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q4" value="c" id="q4-c">
-                        <label for="q4-c">C. 烈火熊熊。<br>你的视网膜在灼烧。<br>你意识到——<br>摧毁中蕴藏着新生的力量。</label>
+                        <label for="q4-c">火焰在天穹蔓延。<br>光像熔化的金属，倾泻。<br>在炽白的深处，有东西正在诞生。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q4" value="d" id="q4-d">
-                        <label for="q4-d">D. 天空成为土地的倒影，澄明如镜。<br>你在其上看到了你自己。<br>恒久地、孤独地矗立。</label>
+                        <label for="q4-d">天空成为土地的倒影，澄明如镜。<br>你在其上看到了你自己。<br>恒久地、孤独地矗立。</label>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn" onclick="goToPage(3)">上一题</button>
-                <button class="btn" onclick="nextPage(4)">下一题</button>
+                <button class="btn" onclick="goToPage(3)">回头</button>
+                <button class="btn" onclick="nextPage(4)">继续前行</button>
             </div>
         </div>
         
         <!-- 问题5 -->
         <div class="page" id="page-5">
-            <div class="progress">第 5 题 / 共 5 题</div>
-            <div class="error" id="error-5">请选择一个选项</div>
+            <div class="progress">5/5</div>
             <div class="question">
-                <h3>5. 祂降临了。<br>世界再次扭曲，像你刚苏醒时一样。<br>你无法辨别祂的形态，只能感到祂的存在。<br>祂离你如此之近，如此慷慨！<br>祂允许你带走一样东西。<br>代价是——<br>你的生命。</h3>
+                <h3>祂降临了。<br>世界再次扭曲。<br>你无法辨别祂的形态，只能感到祂的存在。<br>祂离你如此之近，如此慷慨！<br>祂允许你带走一样东西。<br>代价是——你的生命。</h3>
                 <div class="options">
                     <div class="option">
                         <input type="radio" name="q5" value="a" id="q5-a">
-                        <label for="q5-a">A. 一枚胚胎。<br>漂浮在透明容器里。<br>祂告诉你：<br>这是人类的第一代。<br>这个物种会重新开始，带来：火，战争，叹息。<br>以及亲吻。</label>
+                        <label for="q5-a">一枚胚胎。<br>漂浮在透明容器里。<br>祂告诉你：<br>这是人类的第一代。<br>这个物种会重新开始，带来：火，战争，叹息。<br>以及亲吻。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q5" value="b" id="q5-b">
-                        <label for="q5-b">B. 一片原始海域。<br>足够深，足够广，足够一视同仁地吞没一切残迹。<br>世界回到海洋的子宫中，只剩可预测的、秩序的波涛。</label>
+                        <label for="q5-b">一片原始海域。<br>没有陆地，没有名字。<br>世界回到海洋的子宫。<br>潮汐缓慢呼吸；所有历史在水下溶解。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q5" value="c" id="q5-c">
-                        <label for="q5-c">C. 太阳。<br>灼烧。<br>灼烧。<br>灼烧。<br>没有生命。<br>只有无穷无尽的光和热。<br>宇宙狂奔向自毁，或许这才是它本真的模样。</label>
+                        <label for="q5-c">太阳。<br>它离你越来越近。<br>灼烧。<br>灼烧。<br>灼烧。<br>光与热无穷无尽，这场爆炸无法用任何造物比拟。</label>
                     </div>
                     <div class="option">
                         <input type="radio" name="q5" value="d" id="q5-d">
-                        <label for="q5-d">D. 一只眼睛，祂的眼睛。<br>你的肉身毁灭，意识看到祂所看到的一切。<br>无论是真理，还是虚妄。<br>你将永远不能合上眼睑。</label>
+                        <label for="q5-d">一只眼睛。祂的眼睛。<br>你的肉身消散，意识接管祂的视野。<br>星系诞生。文明灭绝。<br>无论是真理还是虚妄，你将永远不能合上眼睑。</label>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn" onclick="goToPage(4)">上一题</button>
-                <button class="btn" onclick="calculateResult()">提交测试</button>
+                <button class="btn" onclick="goToPage(4)">回头</button>
+                <button class="btn" onclick="calculateResult()">抵达</button>
             </div>
         </div>
         
         <!-- 结果页 -->
         <div class="page" id="page-result">
-            <h2>测试结果</h2>
             <div class="result-content" id="resultContent"></div>
-            <button class="btn" style="margin-top: 20px;" onclick="restartTest()">重新测试</button>
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn" onclick="captureResult()">生成截图</button>
+                <button class="btn" onclick="restartTest()">轮回</button>
+            </div>
         </div>
     </div>
     
@@ -426,12 +490,9 @@
             
             // 检查是否选择了选项
             if (!selectedOption) {
-                document.getElementById(`error-${currentPage}`).style.display = 'block';
+                // 错误提示元素已移除，直接返回
                 return;
             }
-            
-            // 隐藏错误提示
-            document.getElementById(`error-${currentPage}`).style.display = 'none';
             
             // 存储答案
             answers[questionName] = selectedOption.value;
@@ -511,7 +572,7 @@
                     if (q === 'q5') {
                         const selectedOption = document.querySelector(`input[name="q5"]:checked`);
                         if (!selectedOption) {
-                            document.getElementById('error-5').style.display = 'block';
+                            // 错误提示元素已移除，直接返回
                             return;
                         }
                         // 存储最后一题的答案
@@ -550,11 +611,11 @@
             
             // 计算五个维度的得分
             const dimensions = {
-                第一次月升: 2 * metrics.W + metrics.G - metrics.D - metrics.V + 3 * metrics.N,
-                孤塔: metrics.W + 3 * metrics.G - metrics.D + metrics.N + metrics.R,
-                锈钉: 3 * metrics.W + metrics.G - metrics.V,
+                第一次月升: 2 * metrics.W + metrics.G - metrics.D - metrics.V + 2 * metrics.N,
+                孤塔: metrics.W + 2 * metrics.G - metrics.D + metrics.N + metrics.R,
+                锈钉: 2 * metrics.W + metrics.G + metrics.R - metrics.V,
                 赤色潮汐: -metrics.W + 3 * metrics.D + metrics.V - metrics.N,
-                冷雾: -metrics.W + metrics.G - metrics.D + 3 * metrics.V
+                冷雾: -metrics.W + metrics.G + 2 * metrics.V - metrics.D
             };
             
             // 确定最高得分的维度
@@ -575,26 +636,90 @@
             // 显示结果
             const resultContent = document.getElementById('resultContent');
             
-            // 为第一次月升结果类型生成特定内容
+            // 为特定结果类型生成特定内容
             if (resultName === "第一次月升") {
                 resultContent.innerHTML = `
-                    <p><strong>你的类型：</strong>${resultName}</p>
-                    <p>你把一粒种子埋进自己的肋骨。</p>
-                    <p>它将在某个夜晚破开你的胸膛，萌芽。</p>
-                    <p>那便是了——新世界的第一轮月亮。</p>
-                    <p style="font-size: 14px; font-style: italic; margin-top: 20px;">新生/浪漫/执念/共情/理想主义</p>
+                    <h2 style="text-align: center; font-size: 24px; color: #ff4444; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);">${resultName}</h2>
+                    <div style="text-align: center; font-style: italic; color: #ff6666; margin-bottom: 20px;">
+                        <p>你把一粒种子埋进自己的肋骨。</p>
+                        <p>它将在某个夜晚破开你的胸膛，萌芽。</p>
+                        <p>那便是了——新世界的第一轮月亮。</p>
+                    </div>
+                    <p style="font-size: 14px; text-align: center; margin-top: 20px;">你：新生/浪漫/执念/共情/理想主义</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="moonrise.png" alt="月升" style="max-width: 100%; height: auto;">
+                    </div>
                     <p style="font-style: italic; text-align: right; margin-top: 30px;">April is the cruel-lest month, breeding Lilacs out of the dead land.</p>
                     <p style="font-style: italic; text-align: right;">——The Waste Land  T. S. Eliot</p>
                 `;
-                // 修改结果页标题
-                document.querySelector('#page-result h2').textContent = '月升';
+            } else if (resultName === "赤色潮汐") {
+                resultContent.innerHTML = `
+                    <h2 style="text-align: center; font-size: 24px; color: #ff4444; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);">${resultName}</h2>
+                    <div style="text-align: center; font-style: italic; color: #ff6666; margin-bottom: 20px;">
+                        <p>血。血。血。潮水从你的骨缝升起。</p>
+                        <p>来势汹汹地冲毁堤岸，吞没目之所及的一切。</p>
+                        <p>来吧。这个世界会记住凶手的名字。</p>
+                    </div>
+                    <p style="font-size: 14px; text-align: center; margin-top: 20px;">你：毁灭/意志/狂热/变革/力量</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="./redtide.png" alt="赤色潮汐" style="max-width: 100%; height: auto;">
+                    </div>
+                    <p style="font-style: italic; text-align: right; margin-top: 30px;">The blood-dimmed tide is loosed, and everywhere</p>
+                    <p style="font-style: italic; text-align: right;">The ceremony of innocence is drowned.</p>
+                    <p style="font-style: italic; text-align: right;">—— The Second Coming W. B. Yeats</p>
+                `;
+            } else if (resultName === "孤塔") {
+                resultContent.innerHTML = `
+                    <h2 style="text-align: center; font-size: 24px; color: #ff4444; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);">${resultName}</h2>
+                    <div style="text-align: center; font-style: italic; color: #ff6666; margin-bottom: 20px;">
+                        <p>风在废弃的港口之间巡游。</p>
+                        <p>你驻守在最后一座塔中。</p>
+                        <p>微弱的火焰。跳动的心。</p>
+                    </div>
+                    <p style="font-size: 14px; text-align: center; margin-top: 20px;">你：守望/责任/秩序/克制/稳定</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="./lighthouse.png" alt="孤塔" style="max-width: 100%; height: auto;">
+                    </div>
+                    <p style="font-style: italic; text-align: right; margin-top: 30px;">"The sea is calm tonight.</p>
+                    <p style="font-style: italic; text-align: right;">The tide is full, the moon lies fair…"</p>
+                    <p style="font-style: italic; text-align: right;">—— Dover Beach · Matthew Arnold</p>
+                `;
+            } else if (resultName === "锈钉") {
+                resultContent.innerHTML = `
+                    <h2 style="text-align: center; font-size: 24px; color: #ff4444; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);">${resultName}</h2>
+                    <div style="text-align: center; font-style: italic; color: #ff6666; margin-bottom: 20px;">
+                        <p>雨水年复一年地落下。</p>
+                        <p>锈贪婪地啃食铁。</p>
+                        <p>你在废墟中，一次次把秩序钉回世界。</p>
+                    </div>
+                    <p style="font-size: 14px; text-align: center; margin-top: 20px;">你：殉守 / 忠诚 / 抵抗 / 苦役 / 固执</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="./rustnail.png" alt="锈钉" style="max-width: 100%; height: auto;">
+                    </div>
+                    <p style="font-style: italic; text-align: right; margin-top: 30px;">"I am the man who has seen affliction</p>
+                    <p style="font-style: italic; text-align: right;">by the rod of His wrath."</p>
+                    <p style="font-style: italic; text-align: right;">—— Book of Lamentations</p>
+                `;
+            } else if (resultName === "冷雾") {
+                resultContent.innerHTML = `
+                    <h2 style="text-align: center; font-size: 24px; color: #ff4444; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);">${resultName}</h2>
+                    <div style="text-align: center; font-style: italic; color: #ff6666; margin-bottom: 20px;">
+                        <p>雾从群山之间缓慢铺开，覆盖河岸、城墙与道路。</p>
+                        <p>它将停留很久——久到姓名磨灭，久到历史失去意义。</p>
+                        <p>你恒久地俯视。</p>
+                    </div>
+                    <p style="font-size: 14px; text-align: center; margin-top: 20px;">你：理性 / 距离 / 观察 / 克制 / 清醒</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="./coldfrog.png" alt="冷雾" style="max-width: 100%; height: auto;">
+                    </div>
+                    <p style="font-style: italic; text-align: right; margin-top: 30px;">"Der Mensch ist etwas, das überwunden werden soll."</p>
+                    <p style="font-style: italic; text-align: right;">—— Thus Spoke Zarathustra · Friedrich Nietzsche</p>
+                `;
             } else {
                 resultContent.innerHTML = `
                     <p><strong>你的类型：</strong>${resultName}</p>
                     <p><strong>描述：</strong>${resultTypes[resultType].description}</p>
                 `;
-                // 恢复默认标题
-                document.querySelector('#page-result h2').textContent = '测试结果';
             }
             
             // 导航到结果页
@@ -620,7 +745,27 @@
             goToPage('intro');
         }
         
-
+        // 截图函数
+        function captureResult() {
+            // 获取结果内容元素
+            const resultContent = document.getElementById('resultContent');
+            
+            // 使用html2canvas生成截图
+            html2canvas(resultContent, {
+                scale: 2, // 提高截图清晰度
+                useCORS: true, // 允许加载跨域图片
+                logging: false
+            }).then(canvas => {
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.download = '终焉回响_测试结果.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(error => {
+                console.error('截图失败:', error);
+                alert('截图失败，请重试');
+            });
+        }
     </script>
 </body>
 </html>
